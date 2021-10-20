@@ -69,6 +69,27 @@ def all_cafes():
     return jsonify(cafes=list_of_cafes)
 
 
+@app.route("/search")
+def search_cafe():
+    cafe_location = request.args.get("loc")
+    cafe = Cafe.query.filter_by(location=cafe_location).first()
+    if cafe:
+        one_cafe = jsonify(
+            name=cafe.name,
+            map_url=cafe.map_url,
+            image=cafe.img_url,
+            location=cafe.location,
+            has_sockets=cafe.has_sockets,
+            has_toilet=cafe.has_toilet,
+            has_wifi=cafe.has_wifi,
+            can_take_calls=cafe.can_take_calls,
+            seats=cafe.seats,
+            coffee_price=cafe.coffee_price
+        )
+        return one_cafe
+    else:
+        return jsonify(error={"no such cafee": "found"})
+
 ## HTTP GET - Read Record
 
 ## HTTP POST - Create Record
